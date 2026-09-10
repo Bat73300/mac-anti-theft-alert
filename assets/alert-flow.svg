@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">Mac Anti-Theft Alert flow</title>
+  <desc id="desc">Power connection triggers a local check and sends alerts through Telegram and email.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f172a"/><stop offset="1" stop-color="#172554"/></linearGradient>
+    <linearGradient id="power" x1="0" x2="1"><stop stop-color="#f59e0b"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <linearGradient id="alert" x1="0" x2="1"><stop stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#020617" flood-opacity=".36"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10Z" fill="#94a3b8"/></marker>
+  </defs>
+  <rect width="1200" height="430" rx="28" fill="url(#bg)"/>
+  <text x="70" y="76" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="34" font-weight="700">Mac Anti-Theft Alert</text>
+  <text x="70" y="112" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="19">A power connection creates two private alerts.</text>
+  <g filter="url(#shadow)">
+    <rect x="70" y="175" width="225" height="145" rx="22" fill="url(#power)"/>
+    <text x="182" y="230" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="42">⚡</text>
+    <text x="182" y="275" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="22" font-weight="700">Power connected</text>
+  </g>
+  <path d="M310 248 H435" stroke="#94a3b8" stroke-width="5" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="455" y="175" width="285" height="145" rx="22" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+    <text x="598" y="225" text-anchor="middle" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="22" font-weight="700">Mac checks</text>
+    <text x="598" y="260" text-anchor="middle" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="18">Network details + webcam photo</text>
+    <text x="598" y="290" text-anchor="middle" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="18">Shortcuts permissions</text>
+  </g>
+  <path d="M755 222 H850" stroke="#94a3b8" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M755 274 H850" stroke="#94a3b8" stroke-width="5" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="870" y="145" width="255" height="105" rx="22" fill="url(#alert)"/>
+    <text x="997" y="190" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="24" font-weight="700">Telegram</text>
+    <text x="997" y="220" text-anchor="middle" fill="#e0e7ff" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="17">Text + photo</text>
+    <rect x="870" y="275" width="255" height="105" rx="22" fill="#0f766e"/>
+    <text x="997" y="320" text-anchor="middle" fill="white" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="24" font-weight="700">Mail.app</text>
+    <text x="997" y="350" text-anchor="middle" fill="#ccfbf1" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="17">Text + photo attachment</text>
+  </g>
+</svg>
