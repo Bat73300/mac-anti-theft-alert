@@ -4,6 +4,31 @@ TELEGRAM_BOT_TOKEN=''
 TELEGRAM_CHAT_ID=''
 EMAIL_TO=''
 
+# Email delivery: mail_app uses the configured Mail.app account. smtp sends
+# directly without Mail.app; its password stays only in the macOS Keychain.
+EMAIL_DELIVERY='mail_app'
+SMTP_URL='smtps://smtp.example.com:465'
+SMTP_USER='you@example.com'
+SMTP_FROM='you@example.com'
+SMTP_KEYCHAIN_SERVICE='mac-alert.smtp'
+
+# Exact name of the macOS Shortcut that runs mac-alert.sh.
+SHORTCUT_NAME='Mac Anti-Theft Alert'
+
+# Alert mode:
+# - always: alert when the user session is open or locked (useful for setup tests)
+# - locked_only: alert only while the already-open user session is locked
+# - off: unload the project monitors and send no alerts or queued deliveries
+ALERT_MODE='always'
+
 # Optional: comma-separated public IP addresses for trusted places.
 # Example: HOME_PUBLIC_IPS='203.0.113.10,198.51.100.25'
 HOME_PUBLIC_IPS=''
+
+# Privacy choices. Set either to false to omit that data from every alert.
+CAPTURE_PHOTO='true'
+LOOKUP_PUBLIC_IP='true'
+
+# Retain unsent Telegram and direct-SMTP alert parts for at most this long.
+QUEUE_MAX_AGE_DAYS='7'
+QUEUE_MAX_ITEMS='50'

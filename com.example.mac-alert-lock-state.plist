@@ -2,16 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <!-- Per-user periodic power transition watcher. __HOME__ is replaced by install.sh. -->
+  <!-- Per-user lock-state monitor for the locked-only alert mode. -->
   <key>Label</key>
-  <string>com.example.mac-alert-power</string>
+  <string>com.example.mac-alert-lock-state</string>
   <key>ProgramArguments</key>
   <array>
-    <string>__HOME__/.mac-alert/mac-alert-power-watch.sh</string>
+    <string>__HOME__/.mac-alert/mac-alert-lock-state-monitor</string>
+    <string>__HOME__/.mac-alert/session-lock-state</string>
   </array>
-  <key>StartInterval</key>
-  <integer>60</integer>
   <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
   <true/>
   <key>ProcessType</key>
   <string>Background</string>
