@@ -2,7 +2,19 @@
 
 ## Manual checks
 
-Run this first; it takes a local photo and prints the data but sends nothing:
+Run the read-only diagnostic first. It checks local setup and sends no alert,
+opens no camera, contacts no network, and does not read a Keychain password:
+
+```sh
+~/.mac-alert/mac-alert-doctor.sh
+```
+
+The diagnostic exits with `0` when no local setup issue is found, and `1` when
+it lists an item to fix. Its result does not prove that an external provider
+will accept delivery; run the full manual test after it succeeds.
+
+Then run this local capture test. It takes a photo and prints the data but
+sends nothing:
 
 ```sh
 ~/.mac-alert/mac-alert.sh --dry-run

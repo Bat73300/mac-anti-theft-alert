@@ -60,3 +60,13 @@ zsh tests/verify.sh
 It checks shell syntax, Python syntax, launch-agent plist files, the
 lock-state monitor compilation, and safe parsing of a sample configuration.
 It never opens the camera or contacts the internet.
+
+After completing setup, use the read-only diagnostic before the first alert:
+
+```sh
+~/.mac-alert/mac-alert-doctor.sh
+```
+
+It checks configuration and file permissions, the Shortcut, the optional
+camera helper, and the two LaunchAgents. It does not send an alert, open the
+camera, contact the network, or read a Keychain password.

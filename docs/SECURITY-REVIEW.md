@@ -1,8 +1,8 @@
 # Security review
 
-Reviewed on 2026-09-10 for version 1.1.0. This is a
-source and configuration review, not a formal penetration test or a guarantee
-against a compromised macOS account.
+Reviewed on 2026-09-11 against the public 1.1.0 release and unreleased
+improvements. This is a source and configuration review, not a formal
+penetration test or a guarantee against a compromised macOS account.
 
 ## Assets and trust boundaries
 
@@ -34,15 +34,21 @@ against a compromised macOS account.
   service is used.
 - **Uninstall:** `uninstall.sh --purge-keychain` removes project files,
   LaunchAgents, the local queue, and the matching SMTP Keychain item.
+- **Read-only setup check:** `mac-alert-doctor.sh` checks only local files and
+  registered services. It never sends an alert, opens the camera, contacts the
+  network, or reads a Keychain password.
 
 ## Verification performed
 
 `zsh tests/verify.sh` passes and checks shell/Python syntax, plist structure,
-lock-monitor compilation, safe parsing of valid configuration, and inert
-handling of shell-looking configuration text. Manual acceptance tests on the
-development Mac confirmed Telegram text/photo delivery, direct Gmail SMTP
-delivery, a complete photo attachment, the trusted home-network label, and
-the locked-session power-transition alert.
+lock-monitor compilation, safe parsing of valid configuration, inert handling
+of shell-looking configuration text, and that the diagnostic does not call an
+alert worker or read a Keychain password. An isolated installation check
+confirmed private permissions for the configuration, helper scripts, and
+LaunchAgent plist files. Manual acceptance tests on the development Mac
+confirmed Telegram text/photo delivery, direct Gmail SMTP delivery, a complete
+photo attachment, the trusted home-network label, and the locked-session
+power-transition alert.
 
 ## Residual limitations
 
