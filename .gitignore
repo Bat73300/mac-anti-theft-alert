@@ -1,0 +1,10 @@
+# Local secrets and runtime state
+config
+pending/
+
+# macOS
+.DS_Store
+
+# Logs and packaged copies
+*.log
+*.zip

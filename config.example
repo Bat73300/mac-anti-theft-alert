@@ -1,0 +1,9 @@
+# Copy this file to ~/.mac-alert/config, then add your own values.
+# Never commit the completed config file to a repository.
+TELEGRAM_BOT_TOKEN=''
+TELEGRAM_CHAT_ID=''
+EMAIL_TO=''
+
+# Optional: comma-separated public IP addresses for trusted places.
+# Example: HOME_PUBLIC_IPS='203.0.113.10,198.51.100.25'
+HOME_PUBLIC_IPS=''
