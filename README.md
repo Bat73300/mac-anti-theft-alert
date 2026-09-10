@@ -17,8 +17,9 @@ If Telegram or direct SMTP is unavailable, the unsent parts of the alert are sav
 ## Quick Start
 
 1. Follow [installation](docs/INSTALL.md), then complete [setup](docs/SETUP.md).
-2. Use the [test matrix](docs/USAGE.md) before relying on an automatic alert.
+2. Run the read-only diagnostic, then use the [test matrix](docs/USAGE.md) before relying on an automatic alert.
 3. Read the [security review](docs/SECURITY-REVIEW.md) and [uninstall guide](docs/UNINSTALL.md) before enabling the project on a Mac you do not control.
+4. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or proposing a change.
 
 ## What it does
 
@@ -157,6 +158,7 @@ Save in Nano with `Ctrl+O`, press `Return`, then exit with `Ctrl+X`.
 | `mac-alert-queue.sh` | Retries queued Telegram and direct-SMTP alerts and enforces retention limits. |
 | `mac-alert-common.sh` | Safely reads the private configuration and sends Telegram requests without exposing the token in command arguments. |
 | `mac-alert-mode.sh` | Selects Always, Locked only, or Off and loads/unloads the monitors. |
+| `mac-alert-doctor.sh` | Read-only diagnostic for configuration, Shortcut, optional camera helper, and LaunchAgents. |
 | `mac-alert-get-chat-id.sh` | One-time helper that matches a unique phrase to retrieve the intended private Telegram chat ID. |
 | `mac-alert-select-chat-id.py` | Validates the Telegram update response and returns exactly one matching private chat ID. |
 | `mac-alert-configure-gmail-smtp.sh` | Optional one-time helper for a personal Gmail SMTP setup. |
@@ -226,6 +228,31 @@ and unlock the Mac once (`Control` + `Command` + `Q`, then sign in). The lock
 monitor starts as `unknown` and this one cycle initializes it safely before the
 first locked-screen power test.
 
+### After restarting the Mac
+
+There is no app to open. The two per-user LaunchAgents start automatically
+after the user signs in to macOS, then the power watcher checks once per
+minute.
+
+- In **Always** mode, monitoring is ready after sign-in. Wait for one
+  one-minute check before testing a battery-to-AC transition.
+- In **Locked only** mode, lock and unlock the already-open session once after
+  every restart before relying on an alert.
+- In **Off** mode, neither monitor starts until the user chooses Always or
+  Locked only again.
+
+To inspect the local state without sending an alert, run:
+
+```sh
+~/.mac-alert/mac-alert-power-watch.sh --status
+```
+
+To confirm that the power watcher is loaded for the current user session, run:
+
+```sh
+launchctl print "gui/$(id -u)/com.example.mac-alert-power" | head
+```
+
 ## Create the Shortcut
 
 The LaunchAgent calls a Shortcut so that macOS can grant access to the camera and Mail.app.
@@ -256,6 +283,13 @@ Run a local diagnostic without sending anything:
 ```
 
 Run the Shortcut manually to send a full test. Confirm that Telegram receives a text alert and a photo, and that the selected email channel delivers the same details and timestamped photo attachment.
+
+Before the full test, run the local diagnostic. It sends no alert, does not
+open the camera, and does not access the Keychain password:
+
+```sh
+~/.mac-alert/mac-alert-doctor.sh
+```
 
 For a power test, unplug the Mac, wait for the next one-minute poll, and plug it back in. The watcher triggers only when it observes the transition from battery to AC. It deliberately does not alert immediately after installation or login.
 
@@ -304,3 +338,8 @@ LaunchAgents, queue, local credentials, Shortcut, and optional dependencies.
 ## License
 
 Released under the [MIT License](LICENSE).
+
+## Project maintenance
+
+Use [CONTRIBUTING.md](CONTRIBUTING.md) for bug reports and changes, and
+[docs/RELEASE.md](docs/RELEASE.md) before publishing a GitHub release.

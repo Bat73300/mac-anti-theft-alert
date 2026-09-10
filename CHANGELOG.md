@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented in this file.
 
+## Unreleased
+
+- Replaces the incompatible Linux ShellCheck workflow with macOS verification
+  that runs the repository's offline test suite on the platform the project
+  supports.
+- Adds `mac-alert-doctor.sh`, a read-only setup diagnostic that checks the
+  private configuration, Shortcut, optional camera helper, LaunchAgents, and
+  lock-state initialization without sending an alert or reading a Keychain
+  password.
+- Adds contributor guidance, privacy-safe issue templates, and a documented
+  release checklist.
+
 ## 1.1.0 — 2026-09-10
 
 - Adds direct TLS/STARTTLS SMTP delivery through the macOS Python runtime. App
