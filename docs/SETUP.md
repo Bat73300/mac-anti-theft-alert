@@ -47,6 +47,12 @@ Keychain. For a personal Gmail account, first enable two-step verification and
 create an **App password** in the Google Account security settings. Use that
 16-character app password, never the normal Google account password.
 
+Direct SMTP requires Python 3. If it is not already installed, run:
+
+```sh
+brew install python
+```
+
 Store it in **Keychain Access** under the **login** keychain:
 
 1. Choose **File → New Password Item**.
@@ -76,12 +82,35 @@ The initial prompt can take up to one minute; later alerts run without it.
    "$HOME/.mac-alert/mac-alert.sh"
    ```
 
-3. Run it once manually. Approve camera access for Shortcuts and `imagesnap`;
-   approve Mail.app automation only when using `mail_app` delivery.
+3. Do not test it manually yet: use the guided test in the next step so it
+   explains every expected macOS permission prompt.
 4. If you chose a different Shortcut name, set the same value in
    `SHORTCUT_NAME` within `~/.mac-alert/config`.
 
-## 4. Select the alert mode and enable monitoring
+## 4. Run the voluntary setup test
+
+This test sends one real alert to the configured Telegram chat and email
+address. It is the safe moment to approve macOS prompts because it runs the
+same Shortcut and alert worker used during normal operation:
+
+```sh
+~/.mac-alert/mac-alert-setup-test.sh
+```
+
+The helper asks for confirmation before sending anything. Depending on the
+configuration, macOS may request:
+
+- Camera access for Shortcuts or `imagesnap` when photos are enabled.
+- Permission to access the one SMTP app password in the login Keychain. Choose
+  **Always Allow** only after confirming that the item is `mac-alert.smtp`.
+- Permission for Shortcuts to control Mail.app when `mail_app` delivery is
+  selected.
+
+Confirm that both Telegram and email arrived, including the photo when it is
+enabled. If a prompt is denied, correct it in **System Settings → Privacy &
+Security**, then run the test again.
+
+## 5. Select the alert mode and enable monitoring
 
 ```sh
 ~/.mac-alert/mac-alert-mode.sh
@@ -99,3 +128,21 @@ Mac restarts, the lock monitor starts in an `unknown` state and deliberately
 does not alert. Lock the screen once with `Control` + `Command` + `Q`, then
 sign back in once. This records the current unlocked state and prepares the
 next real locked-screen power test.
+
+### After restarting the Mac
+
+No graphical application needs to be opened. After the user signs in, macOS
+loads the project LaunchAgents automatically and the power watcher checks once
+per minute.
+
+- **Always:** ready after sign-in; wait one minute before a power-transition
+  test.
+- **Locked only:** complete the lock/unlock initialization above after every
+  restart.
+- **Off:** remains inactive until Always or Locked only is selected again.
+
+Check the current local mode and screen state without sending an alert:
+
+```sh
+~/.mac-alert/mac-alert-power-watch.sh --status
+```

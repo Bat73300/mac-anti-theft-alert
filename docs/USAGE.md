@@ -11,7 +11,11 @@ opens no camera, contacts no network, and does not read a Keychain password:
 
 The diagnostic exits with `0` when no local setup issue is found, and `1` when
 it lists an item to fix. Its result does not prove that an external provider
-will accept delivery; run the full manual test after it succeeds.
+will accept delivery; run the guided setup test after it succeeds:
+
+```sh
+~/.mac-alert/mac-alert-setup-test.sh
+```
 
 Then run this local capture test. It takes a photo and prints the data but
 sends nothing:
@@ -20,9 +24,9 @@ sends nothing:
 ~/.mac-alert/mac-alert.sh --dry-run
 ```
 
-Run the Shortcut manually to test Telegram and the selected email channel.
-Confirm the text, timestamped photo attachment, Wi-Fi status, local/public IP,
-and trusted-network label.
+The guided test runs the Shortcut once and explains any expected macOS privacy
+prompts. Confirm the text, timestamped photo attachment, Wi-Fi status,
+local/public IP, and trusted-network label.
 
 ## Power transition test
 

@@ -37,18 +37,27 @@ penetration test or a guarantee against a compromised macOS account.
 - **Read-only setup check:** `mac-alert-doctor.sh` checks only local files and
   registered services. It never sends an alert, opens the camera, contacts the
   network, or reads a Keychain password.
+- **Explicit consent for delivery testing:** installation and the diagnostic
+  remain passive. `mac-alert-setup-test.sh` explains the data that will leave
+  the Mac and requires an affirmative response before it runs the Shortcut and
+  triggers camera, Keychain, Mail automation, or network activity.
+- **Dependency preflight:** the installer confirms that Apple's Command Line
+  Tools can compile the lock monitor before it writes installation files.
+  Python is resolved from known system or Homebrew locations only when the
+  Telegram chat-ID helper or direct SMTP needs it; it is not assumed to be
+  bundled with macOS.
 
 ## Verification performed
 
-`zsh tests/verify.sh` passes and checks shell/Python syntax, plist structure,
+`zsh tests/verify.sh` passes and checks shell syntax, plist structure,
 lock-monitor compilation, safe parsing of valid configuration, inert handling
 of shell-looking configuration text, and that the diagnostic does not call an
-alert worker or read a Keychain password. An isolated installation check
-confirmed private permissions for the configuration, helper scripts, and
-LaunchAgent plist files. Manual acceptance tests on the development Mac
-confirmed Telegram text/photo delivery, direct Gmail SMTP delivery, a complete
-photo attachment, the trusted home-network label, and the locked-session
-power-transition alert.
+alert worker or read a Keychain password. When Python is installed, it also
+checks both Python helpers. An isolated installation check confirmed private
+permissions for the configuration, helper scripts, and LaunchAgent plist
+files. Manual acceptance tests on the development Mac confirmed Telegram
+text/photo delivery, direct Gmail SMTP delivery, a complete photo attachment,
+the trusted home-network label, and the locked-session power-transition alert.
 
 ## Residual limitations
 
@@ -70,3 +79,5 @@ power-transition alert.
 3. Complete the manual test matrix in [USAGE.md](USAGE.md).
 4. Review `config.example` and choose whether to disable photo or public-IP
    collection.
+5. Run the opt-in setup test and approve only the macOS prompts described in
+   [SETUP.md](SETUP.md).
