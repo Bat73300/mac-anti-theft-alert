@@ -87,4 +87,10 @@ if /usr/bin/grep -Eq 'source[[:space:]].*(/config|\$config)' "$root"/*.sh; then
   print -u2 -- 'Unexpected executable config load found.'
   exit 1
 fi
+# The diagnostic must remain read-only: it should never invoke an alert worker
+# or access a Keychain password while it checks local prerequisites.
+if /usr/bin/grep -Eq 'mac-alert\.sh|find-generic-password.*-w|telegram_message|smtp_send' "$root/mac-alert-doctor.sh"; then
+  print -u2 -- 'Doctor must not send alerts or read Keychain passwords.'
+  exit 1
+fi
 print -- 'mac-alert: offline verification passed.'
