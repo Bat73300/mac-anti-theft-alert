@@ -1,21 +1,26 @@
 # Changelog
 
-All notable changes to this project are documented in this file.
-
 ## Unreleased
 
+- Check for Apple Command Line Tools before installation changes files.
+- Support Python 3 from standard Homebrew locations instead of assuming it is
+  bundled with macOS, and explain when it is required.
+- Add an explicit, opt-in setup test that runs the real Shortcut once so users
+  can approve and verify delivery and macOS privacy prompts.
 - Clarifies the public README's supported macOS version, user-session modes,
   startup behaviour, privacy scope, and setup path. Adds a transparent note
   about AI-assisted development to the contribution guide.
 - Replaces the incompatible Linux ShellCheck workflow with macOS verification
   that runs the repository's offline test suite on the platform the project
   supports.
-- Adds mac-alert-doctor.sh, a read-only setup diagnostic that checks the
+- Adds `mac-alert-doctor.sh`, a read-only setup diagnostic that checks the
   private configuration, Shortcut, optional camera helper, LaunchAgents, and
   lock-state initialization without sending an alert or reading a Keychain
   password.
 - Adds contributor guidance, privacy-safe issue templates, and a documented
   release checklist.
+
+All notable changes to this project are documented in this file.
 
 ## 1.1.0 — 2026-09-10
 

@@ -17,6 +17,16 @@ case "${1:-}" in
   *) print -u2 -- "Usage: zsh install.sh [--enable]"; exit 2 ;;
 esac
 
+# The lock-state monitor is a small native program. Check this before writing
+# any files so a Mac without the Command Line Tools never gets a half-finished
+# installation. Full Xcode also supplies clang and passes this check.
+if ! /usr/bin/xcrun --find clang >/dev/null 2>&1; then
+  print -u2 -- 'mac-alert: Apple Command Line Tools are required to install the lock monitor.'
+  print -u2 -- 'mac-alert: Install them, then re-run this command:'
+  print -u2 -- 'mac-alert:   xcode-select --install'
+  exit 1
+fi
+
 if ! command -v imagesnap >/dev/null 2>&1; then
   print -u2 -- "mac-alert: imagesnap is not installed; alerts will send without a photo."
   print -u2 -- "mac-alert: Install it later with: brew install imagesnap"
@@ -28,6 +38,7 @@ install -m 700 "$script_dir/mac-alert-queue.sh" "$alert_dir/mac-alert-queue.sh"
 install -m 700 "$script_dir/mac-alert-power-watch.sh" "$alert_dir/mac-alert-power-watch.sh"
 install -m 700 "$script_dir/mac-alert-mode.sh" "$alert_dir/mac-alert-mode.sh"
 install -m 700 "$script_dir/mac-alert-doctor.sh" "$alert_dir/mac-alert-doctor.sh"
+install -m 700 "$script_dir/mac-alert-setup-test.sh" "$alert_dir/mac-alert-setup-test.sh"
 install -m 700 "$script_dir/mac-alert-get-chat-id.sh" "$alert_dir/mac-alert-get-chat-id.sh"
 install -m 700 "$script_dir/mac-alert-select-chat-id.py" "$alert_dir/mac-alert-select-chat-id.py"
 install -m 700 "$script_dir/mac-alert-configure-gmail-smtp.sh" "$alert_dir/mac-alert-configure-gmail-smtp.sh"
@@ -50,6 +61,14 @@ else
   fi
 fi
 
+# Direct SMTP and the private-chat helper use Python 3. It is not assumed to
+# ship with macOS, so only require it when direct SMTP was actually selected.
+source "$alert_dir/mac-alert-common.sh"
+load_config "$alert_dir/config"
+if [[ "$EMAIL_DELIVERY" == smtp ]]; then
+  require_python3 || exit 1
+fi
+
 /usr/bin/sed "s|__HOME__|$HOME|g" "$script_dir/com.example.mac-alert-power.plist" > "$plist"
 /bin/chmod 600 "$plist"
 /usr/bin/sed "s|__HOME__|$HOME|g" "$script_dir/com.example.mac-alert-lock-state.plist" > "$lock_plist"
@@ -57,7 +76,7 @@ fi
 
 print -- "Installation files are ready."
 print -- "Privacy: alerts can send a webcam photo and network details to Telegram and email."
-print -- "Next: follow docs/SETUP.md, then re-run this command with --enable."
+print -- "Next: follow docs/SETUP.md, run the voluntary setup test, then re-run this command with --enable."
 
 if [[ "${1:-}" == "--enable" ]]; then
   /bin/launchctl bootout "gui/$(/usr/bin/id -u)/$lock_label" 2>/dev/null || true

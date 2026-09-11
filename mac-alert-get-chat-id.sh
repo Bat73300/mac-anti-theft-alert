@@ -10,6 +10,7 @@ source "$alert_dir/mac-alert-common.sh"
 
 load_config "$config_file"
 [[ -n "$TELEGRAM_BOT_TOKEN" ]] || { print -u2 -- "mac-alert: Set TELEGRAM_BOT_TOKEN first"; exit 1; }
+require_python3 || exit 1
 [[ $# -eq 1 && -n "$1" ]] || {
   print -u2 -- "Usage: $0 'unique phrase sent to the bot'"
   exit 2
@@ -26,4 +27,4 @@ trap '/bin/rm -f -- "$response_file"' EXIT
   curl_config_line url "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates"
 } | /usr/bin/curl --config - > "$response_file"
 
-/usr/bin/python3 "$alert_dir/mac-alert-select-chat-id.py" "$response_file" "$verification_phrase"
+"$(find_python3)" "$alert_dir/mac-alert-select-chat-id.py" "$response_file" "$verification_phrase"

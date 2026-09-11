@@ -11,6 +11,7 @@ source "$alert_dir/mac-alert-common.sh"
 trap '/bin/rm -f -- "$temporary_file"' EXIT
 
 load_config "$config_file"
+require_python3 || exit 1
 [[ "$EMAIL_TO" == *@gmail.com || "$EMAIL_TO" == *@googlemail.com ]] || {
   print -u2 -- "mac-alert: EMAIL_TO must be a personal Gmail address for this helper"
   exit 1

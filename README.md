@@ -17,8 +17,9 @@ available when Mail.app is not configured.
 ## Before you install
 
 - Developed and tested only on **macOS 27**.
-- Requires Shortcuts and a Telegram bot. Webcam photos additionally require
-  [Homebrew](https://brew.sh/) and imagesnap.
+- Requires Apple Command Line Tools, Shortcuts, and a Telegram bot. Webcam
+  photos additionally require [Homebrew](https://brew.sh/) and imagesnap.
+  Direct SMTP and the private Telegram chat-ID helper also require Python 3.
 - Uses a **per-user** macOS LaunchAgent. It starts after that user signs in;
   there is no app to open after a restart.
 - Can send alert data and an optional photo to Telegram and your email
@@ -39,7 +40,8 @@ the first real test.
 ## Get started
 
 1. Follow the [installation guide](docs/INSTALL.md).
-2. Complete [Telegram, email, Shortcut, and mode setup](docs/SETUP.md).
+2. Complete [Telegram, email, Shortcut, guided delivery test, and mode
+   setup](docs/SETUP.md).
 3. Run the local [usage and test matrix](docs/USAGE.md) before relying on an
    automatic alert.
 4. Keep the [uninstall guide](docs/UNINSTALL.md) available if the Mac changes

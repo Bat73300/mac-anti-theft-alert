@@ -29,7 +29,7 @@ parse_config() {
     trim_config_text "$key"; key="$REPLY"
     trim_config_text "$value"; value="$REPLY"
     case "$key" in
-      TELEGRAM_BOT_TOKEN|TELEGRAM_CHAT_ID|EMAIL_TO|EMAIL_DELIVERY|SMTP_URL|SMTP_USER|SMTP_FROM|SMTP_KEYCHAIN_SERVICE|SHORTCUT_NAME|ALERT_MODE|HOME_PUBLIC_IPS|CAPTURE_PHOTO|LOOKUP_PUBLIC_IP|QUEUE_MAX_AGE_DAYS|QUEUE_MAX_ITEMS) ;;
+    TELEGRAM_BOT_TOKEN|TELEGRAM_CHAT_ID|EMAIL_TO|EMAIL_DELIVERY|SMTP_URL|SMTP_USER|SMTP_FROM|SMTP_KEYCHAIN_SERVICE|PYTHON3_PATH|SHORTCUT_NAME|ALERT_MODE|HOME_PUBLIC_IPS|CAPTURE_PHOTO|LOOKUP_PUBLIC_IP|QUEUE_MAX_AGE_DAYS|QUEUE_MAX_ITEMS) ;;
       *) print -u2 -- "mac-alert: Unsupported configuration key: $key"; return 1 ;;
     esac
     [[ -z "${MAC_ALERT_CONFIG[$key]+present}" ]] || { print -u2 -- "mac-alert: Duplicate configuration key: $key"; return 1; }
@@ -54,6 +54,7 @@ load_config() {
   SMTP_USER="${MAC_ALERT_CONFIG[SMTP_USER]:-}"
   SMTP_FROM="${MAC_ALERT_CONFIG[SMTP_FROM]:-}"
   SMTP_KEYCHAIN_SERVICE="${MAC_ALERT_CONFIG[SMTP_KEYCHAIN_SERVICE]:-mac-alert.smtp}"
+  PYTHON3_PATH="${MAC_ALERT_CONFIG[PYTHON3_PATH]:-}"
   SHORTCUT_NAME="${MAC_ALERT_CONFIG[SHORTCUT_NAME]:-Mac Anti-Theft Alert}"
   ALERT_MODE="${MAC_ALERT_CONFIG[ALERT_MODE]:-}"
   HOME_PUBLIC_IPS="${MAC_ALERT_CONFIG[HOME_PUBLIC_IPS]:-}"
@@ -77,6 +78,31 @@ load_config() {
     [[ "$SMTP_URL" == smtp://* || "$SMTP_URL" == smtps://* ]] || { print -u2 -- "mac-alert: SMTP_URL must start with smtp:// or smtps://"; return 1; }
     [[ "$SMTP_URL$SMTP_USER$SMTP_FROM$SMTP_KEYCHAIN_SERVICE" != *[\"\\]* ]] || { print -u2 -- "mac-alert: Invalid SMTP characters"; return 1; }
   fi
+}
+
+# Locate Python without assuming that macOS provides it in /usr/bin. Homebrew
+# uses one of the two absolute paths below, which remain available to a
+# LaunchAgent even when its PATH is minimal. PYTHON3_PATH is an escape hatch
+# for a deliberately installed Python in another location.
+find_python3() {
+  local candidate discovered
+  local -a candidates
+  candidates=()
+  [[ -n "${PYTHON3_PATH:-}" ]] && candidates+=("$PYTHON3_PATH")
+  candidates+=(/usr/bin/python3 /opt/homebrew/bin/python3 /usr/local/bin/python3)
+  discovered="$(command -v python3 2>/dev/null || true)"
+  [[ "$discovered" == /* ]] && candidates+=("$discovered")
+  for candidate in "${candidates[@]}"; do
+    [[ -x "$candidate" ]] && { print -r -- "$candidate"; return 0; }
+  done
+  return 1
+}
+
+require_python3() {
+  find_python3 >/dev/null 2>&1 && return 0
+  print -u2 -- 'mac-alert: Python 3 is required for this action.'
+  print -u2 -- 'mac-alert: Install it with Homebrew: brew install python'
+  return 1
 }
 
 telegram_message() {
@@ -134,13 +160,15 @@ run_with_timeout() {
 # Direct SMTP sender. The Python helper reads the password from Keychain inside
 # its own process; it is never written into the configuration or command line.
 smtp_send() {
-  [[ -x /usr/bin/python3 ]] || {
+  local python3_path
+  python3_path="$(find_python3)" || {
     print -u2 -- "mac-alert: Python 3 is required for direct SMTP delivery"
+    print -u2 -- 'mac-alert: Install it with Homebrew: brew install python'
     return 1
   }
   # This includes the one-time Keychain consent dialog (up to 60 seconds),
   # plus the bounded TLS/SMTP connection and delivery.
-  run_with_timeout 90 /usr/bin/python3 "$HOME/.mac-alert/mac-alert-send-smtp.py" \
+  run_with_timeout 90 "$python3_path" "$HOME/.mac-alert/mac-alert-send-smtp.py" \
     "$SMTP_URL" "$SMTP_USER" "$SMTP_FROM" "$EMAIL_TO" "$SMTP_KEYCHAIN_SERVICE" \
     "$3" "$1" "${2:-}"
 }

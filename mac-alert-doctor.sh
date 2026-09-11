@@ -50,7 +50,12 @@ case "$EMAIL_DELIVERY" in
     ;;
   smtp)
     report_ok "Direct SMTP delivery is selected"
-    report_note "Send one manual test to confirm the Keychain app password and SMTP server"
+    if python3_path="$(find_python3 2>/dev/null)"; then
+      report_ok "Python 3 is available for direct SMTP: $python3_path"
+    else
+      report_problem "Python 3 is required for direct SMTP; install it with: brew install python"
+    fi
+    report_note "Run mac-alert-setup-test.sh to confirm Keychain access and SMTP delivery"
     ;;
 esac
 
@@ -64,6 +69,7 @@ fi
 
 if /usr/bin/shortcuts list 2>/dev/null | /usr/bin/grep -Fxq -- "$SHORTCUT_NAME"; then
   report_ok "Shortcut exists: $SHORTCUT_NAME"
+  report_note "Run mac-alert-setup-test.sh once to confirm delivery and macOS privacy prompts"
 else
   report_problem "Shortcut was not found: $SHORTCUT_NAME"
 fi

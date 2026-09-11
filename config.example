@@ -11,6 +11,9 @@ SMTP_URL='smtps://smtp.example.com:465'
 SMTP_USER='you@example.com'
 SMTP_FROM='you@example.com'
 SMTP_KEYCHAIN_SERVICE='mac-alert.smtp'
+# Usually leave this empty. Set an absolute path only if Python 3 is installed
+# outside /usr/bin, /opt/homebrew/bin, or /usr/local/bin.
+PYTHON3_PATH=''
 
 # Exact name of the macOS Shortcut that runs mac-alert.sh.
 SHORTCUT_NAME='Mac Anti-Theft Alert'
