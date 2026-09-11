@@ -10,9 +10,33 @@ available when Mail.app is not configured.
 
 ![Power connection alert flow](assets/alert-flow.svg)
 
+## What an alert looks like
+
+The examples below are fictional. They show the same event delivered to the
+private Telegram chat and email address configured by the owner. A webcam
+photo is optional and can be disabled in the private configuration.
+
+![Example Telegram alert](assets/example-telegram-alert.svg)
+
+![Example email alert](assets/example-email-alert.svg)
+
 > [!IMPORTANT]
 > This project sends an alert after a power connection is detected. It does
 > not locate, lock, recover, or otherwise prevent theft of a Mac.
+
+## Example use cases
+
+- **A recovery clue after an unexpected power connection.** If a missing Mac is
+  connected to a charger and later reaches a network, the owner can receive the
+  time, network context, and—only when enabled—an optional camera photo. This
+  may help document what happened; it is not a recovery or tracking service.
+- **A transparent family-device check.** On a shared home Mac, **Always** mode
+  can show when the computer was reconnected to power, for example during a
+  late-night Roblox session. Use this only with clear household rules and the
+  knowledge of everyone concerned; the tool identifies an event, not a person.
+- **A travel or shared-workspace signal.** A consultant, student, or small team
+  can receive a notice when a laptop left unattended is connected to power on
+  an unfamiliar network, then compare the alert with the expected location.
 
 ## Before you install
 
