@@ -10,16 +10,6 @@ available when Mail.app is not configured.
 
 ![Power connection alert flow](assets/alert-flow.svg)
 
-## What an alert looks like
-
-The examples below are fictional. They show the same event delivered to the
-private Telegram chat and email address configured by the owner. A webcam
-photo is optional and can be disabled in the private configuration.
-
-![Example Telegram alert](assets/example-telegram-alert.svg)
-
-![Example email alert](assets/example-email-alert.svg)
-
 > [!IMPORTANT]
 > This project sends an alert after a power connection is detected. It does
 > not locate, lock, recover, or otherwise prevent theft of a Mac.
