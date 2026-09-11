@@ -4,10 +4,13 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+- Clarifies the public README's supported macOS version, user-session modes,
+  startup behaviour, privacy scope, and setup path. Adds a transparent note
+  about AI-assisted development to the contribution guide.
 - Replaces the incompatible Linux ShellCheck workflow with macOS verification
   that runs the repository's offline test suite on the platform the project
   supports.
-- Adds `mac-alert-doctor.sh`, a read-only setup diagnostic that checks the
+- Adds mac-alert-doctor.sh, a read-only setup diagnostic that checks the
   private configuration, Shortcut, optional camera helper, LaunchAgents, and
   lock-state initialization without sending an alert or reading a Keychain
   password.
